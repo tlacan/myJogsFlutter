@@ -29,5 +29,10 @@ class Engine {
   launchedApplication() {
     engineState.appAlreadyLaunched = true;
     storageManager.setItem(EngineState.storageKey, engineState);
+    final storedEngineStateNotMapped = storageManager.getItem(EngineState.storageKey);
+    if (storedEngineStateNotMapped != null) {
+      engineState = EngineState.fromJson(storedEngineStateNotMapped);
+      return;
+    }
   }
 }

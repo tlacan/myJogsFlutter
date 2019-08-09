@@ -28,6 +28,9 @@ dependencies:
 
   # Handle data storage
   localstorage: ^2.0.0
+
+  # UI display dots as PageControl
+  dots_indicator: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -48,6 +51,11 @@ flutter:
     - assets/images/icon-chrono.png
     - assets/images/icon-logo-bis.png
     - assets/images/icon-shoe.png
+
+  fonts:
+    - family: Futura-Bold
+      fonts:
+        - asset: assets/fonts/Futura-Extra-Black-Condensed.ttf
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
