@@ -4,10 +4,20 @@ import 'package:flutter/cupertino.dart';
 class Constants {
   static final colors = _ColorValues();
   static final theme = _Theme();
+  static final url = _Urls();
+}
+
+class _Urls {
+  static final _baseUrl = "http://localhost:8080";
+
+  final login = "$_baseUrl/login";
+  final signUp = "$_baseUrl/signUp";
+  final jogs = "$_baseUrl/jogs";
 }
 
 class _ColorValues {
   final textColor = Color(0xFF454545);
+
 }
 
 class _Theme {

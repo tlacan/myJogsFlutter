@@ -29,6 +29,9 @@ dependencies:
   # Handle data storage
   localstorage: ^2.0.0
 
+  # Manage http requests
+  http: ^0.12.0+2
+
   # UI display dots as PageControl
   dots_indicator: ^1.0.0
 dev_dependencies:

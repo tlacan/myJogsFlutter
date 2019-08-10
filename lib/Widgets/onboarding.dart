@@ -6,21 +6,21 @@ import 'package:my_jogs/Utils/constants.dart';
 import '../Services/engine.dart';
 import '../Utils/localizable.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class OnboardingScreenWidget extends StatefulWidget {
   final Engine engine;
 
-  OnboardingScreen(this.engine);
+  OnboardingScreenWidget(this.engine);
   @override
-  _OnboardingScreenState createState() => _OnboardingScreenState(engine);
+  _OnboardingScreenWidgetState createState() => _OnboardingScreenWidgetState(engine);
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenWidgetState extends State<OnboardingScreenWidget> {
   final Engine engine;
   final pageController = PageController(initialPage: 0);
   int currentPage = 0;
   static final totalPages = 3;
 
-  _OnboardingScreenState(this.engine);
+  _OnboardingScreenWidgetState(this.engine);
 
   void pageChanged(int currentPage) {
     setState(() {
@@ -91,7 +91,7 @@ class _CloseOnboardingButton extends StatelessWidget {
         child: Text(Localizable.valuefor(key: "ONBOARDING.END.BUTTON", context: context),
         style: Constants.theme.subtitle,),
         onPressed: () { 
-          engine.launchedApplication();
+          engine.onboardingCompleted();
           Navigator.of(context).pushReplacementNamed('/main'); 
           },
       ),

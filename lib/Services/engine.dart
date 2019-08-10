@@ -1,38 +1,54 @@
 import 'package:localstorage/localstorage.dart';
+import 'package:my_jogs/Services/userService.dart';
 
-class EngineState {
+
+abstract class EngineComponent {
+  userDidLogOut();
+  storageReady();
+}
+
+class _EngineState {
   static final storageKey = "engineState";
-  bool appAlreadyLaunched;
+  bool onboardingCompleted;
 
-  EngineState({this.appAlreadyLaunched});
-  EngineState.fromJson(Map<String, dynamic> json)
-      : appAlreadyLaunched = json['appAlreadyLaunched'];
+  _EngineState({this.onboardingCompleted});
+  _EngineState.fromJson(Map<String, dynamic> json)
+      : onboardingCompleted = json['onboardingCompleted'];
 
   Map<String, dynamic> toJson() => {
-        'appAlreadyLaunched': appAlreadyLaunched,
-      };
+    'onboardingCompleted': onboardingCompleted,
+  };
 }
 
 class Engine {
   final LocalStorage storageManager = LocalStorage("Engine");
-  EngineState engineState;
+  UserService userService;
+  List<EngineComponent> components = List();
+  _EngineState engineState = _EngineState(onboardingCompleted: false);
 
   Engine() {
-    final storedEngineStateNotMapped = storageManager.getItem(EngineState.storageKey);
-    if (storedEngineStateNotMapped != null) {
-      engineState = EngineState.fromJson(storedEngineStateNotMapped);
-      return;
-    }
-    engineState = EngineState(appAlreadyLaunched: false);
+    userService = UserService(storageManager: storageManager);
+    components.add(userService);
   }
 
-  launchedApplication() {
-    engineState.appAlreadyLaunched = true;
-    storageManager.setItem(EngineState.storageKey, engineState);
-    final storedEngineStateNotMapped = storageManager.getItem(EngineState.storageKey);
+  loadDataInStoreManager() {
+    final storedEngineStateNotMapped = storageManager.getItem(_EngineState.storageKey);
     if (storedEngineStateNotMapped != null) {
-      engineState = EngineState.fromJson(storedEngineStateNotMapped);
-      return;
+      engineState = _EngineState.fromJson(storedEngineStateNotMapped);
     }
+    for (var component in components) {
+      component.storageReady();
+    }
+  }
+
+  userDidLogout() {
+    for (var component in components) {
+      component.userDidLogOut();
+    }
+  }
+
+  onboardingCompleted() {
+    engineState.onboardingCompleted = true;
+    storageManager.setItem(_EngineState.storageKey, engineState);
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import './Services/engine.dart';
 import './Widgets/onboarding.dart';
+import './Widgets/mainTabbar.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,38 +14,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return engine.engineState.appAlreadyLaunched ? CupertinoApp(home: HomeScreen(engine)) :
+    return engine.engineState.onboardingCompleted ? CupertinoApp(home: HomeScreen(engine)) :
     CupertinoApp(
       routes: <String, WidgetBuilder> {
-        '/onBoarding': (BuildContext context) => OnboardingScreen(engine),
-        '/main': (BuildContext context) => MainScreen(engine),
+        '/onBoarding': (BuildContext context) => OnboardingScreenWidget(engine),
+        '/main': (BuildContext context) => MainWidget(engine),
       },
     home: HomeScreen(engine)
-    );
-  }
-}
-
-class MainScreen extends StatelessWidget {
-  final Engine engine;
-
-  MainScreen(this.engine);
-
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoTabScaffold(
-      tabBar: CupertinoTabBar(
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.circle), title: Text("Jambon")),
-          BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.clock), title: Text("Fromage")),
-        ],
-      ),
-      tabBuilder: (context, index) {
-        return Center(
-          child: Text("Hello"),
-        );
-      },
     );
   }
 }
@@ -55,7 +31,18 @@ class HomeScreen extends StatelessWidget {
   HomeScreen(this.engine);
   @override
   Widget build(BuildContext context) {
-    return !engine.engineState.appAlreadyLaunched ? OnboardingScreen(engine) :
-      MainScreen(engine);
+      return FutureBuilder(
+          future: engine.storageManager.ready,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+                // localstorage is ready
+                engine.loadDataInStoreManager();
+                return !engine.engineState.onboardingCompleted ? OnboardingScreenWidget(engine) :
+                      MainWidget(engine);
+            } else {
+                return CircularProgressIndicator();
+            }
+          }
+      );
   }
 }
