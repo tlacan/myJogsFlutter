@@ -26,6 +26,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
 
+  # Manage lottie
+  flutter_lottie: ^0.2.0
+
   # Handle data storage
   localstorage: ^2.0.0
 
@@ -54,7 +57,8 @@ flutter:
     - assets/images/icon-chrono.png
     - assets/images/icon-logo-bis.png
     - assets/images/icon-shoe.png
-
+    - assets/lottie/run.json
+    
   fonts:
     - family: Futura-Bold
       fonts:

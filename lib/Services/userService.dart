@@ -73,8 +73,6 @@ class UserService implements EngineComponent {
 
   @override
     userDidLogOut() {
-    // TODO: implement userDidLogOut
+
   }
-
-
 }

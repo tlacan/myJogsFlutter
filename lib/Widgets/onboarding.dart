@@ -5,6 +5,7 @@ import 'package:my_jogs/Utils/constants.dart';
 
 import '../Services/engine.dart';
 import '../Utils/localizable.dart';
+import './roundButton.dart';
 
 class OnboardingScreenWidget extends StatefulWidget {
   final Engine engine;
@@ -29,7 +30,12 @@ class _OnboardingScreenWidgetState extends State<OnboardingScreenWidget> {
   }
 
   Widget dotsOrButton(BuildContext context) {
-    return currentPage == totalPages - 1 ? _CloseOnboardingButton(engine) :
+    var roundButton = RoundButton(text: Localizable.valuefor(key: "ONBOARDING.END.BUTTON", context: context),
+    onPressed: () { 
+      engine.onboardingCompleted();
+      Navigator.of(context).pushReplacementNamed('/main'); 
+    } );
+    return currentPage == totalPages - 1 ? roundButton :
       DotsIndicator(
         dotsCount: totalPages,
         position: currentPage,
@@ -66,36 +72,6 @@ class _OnboardingScreenWidgetState extends State<OnboardingScreenWidget> {
             ],
           ),
         ));
-  }
-}
-
-class _CloseOnboardingButton extends StatelessWidget {
-  final Engine engine;
-
-  _CloseOnboardingButton(this.engine);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 35,
-      decoration: BoxDecoration(
-        border: Border.all(
-                    color: Colors.black,
-                    style: BorderStyle.solid,
-                    width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(18.0),
-      ),
-      child: 
-      FlatButton(
-        child: Text(Localizable.valuefor(key: "ONBOARDING.END.BUTTON", context: context),
-        style: Constants.theme.subtitle,),
-        onPressed: () { 
-          engine.onboardingCompleted();
-          Navigator.of(context).pushReplacementNamed('/main'); 
-          },
-      ),
-    );
   }
 }
 
