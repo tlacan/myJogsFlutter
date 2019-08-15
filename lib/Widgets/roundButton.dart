@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
 
+import '../Services/engine.dart';
 import '../Utils/constants.dart';
+import '../Services/widgetRefreshManager.dart';
 
-class RoundButton extends StatelessWidget {
+class RoundButton extends StatefulWidget {
+  final Engine engine;
   final String text;
   final VoidCallback onPressed;
 
-  RoundButton({this.text, this.onPressed});
+  RoundButton({this.engine, this.text, this.onPressed});
+
+  @override
+  _RoundButtonState createState() => _RoundButtonState(engine: engine, text: text, onPressed: onPressed);
+}
+
+class _RoundButtonState extends State<RoundButton> implements WidgetRefresherManagerObserver {
+  final Engine engine;
+  VoidCallback onPressed;
+  final String text;
+  _RoundButtonState({this.engine, this.text, this.onPressed}) {
+    engine?.widgetRefreshManager?.addObserver(key: WidgetRefreshManager.loginFormKey, observer: this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +37,21 @@ class RoundButton extends StatelessWidget {
       ),
       child: 
       FlatButton(
-        child: Text(text, style: Constants.theme.subtitle),
+        disabledColor: Colors.orange,
+        disabledTextColor: Colors.black,//Colors.lightGray,
+        child: Text(widget.text, style: Constants.theme.subtitle),
         onPressed: onPressed,
       ),
     );
+  }
+
+  @override
+  void doRefresh(Object value) {
+    if (value is VoidCallback == false) {
+      return;
+    }
+    setState(() { 
+      onPressed = value;
+    });
   }
 }
