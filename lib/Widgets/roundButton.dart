@@ -8,25 +8,31 @@ class RoundButton extends StatefulWidget {
   final Engine engine;
   final String text;
   final VoidCallback onPressed;
+  final String refreshManagerKey;
 
-  RoundButton({this.engine, this.text, this.onPressed});
+  RoundButton({this.engine, this.text, this.onPressed, this.refreshManagerKey});
 
   @override
-  _RoundButtonState createState() => _RoundButtonState(engine: engine, text: text, onPressed: onPressed);
+  _RoundButtonState createState() => _RoundButtonState(engine: engine, text: text, onPressed: onPressed, refreshManagerKey: refreshManagerKey);
 }
 
 class _RoundButtonState extends State<RoundButton> implements WidgetRefresherManagerObserver {
   final Engine engine;
   VoidCallback onPressed;
   final String text;
-  _RoundButtonState({this.engine, this.text, this.onPressed}) {
-    engine?.widgetRefreshManager?.addObserver(key: WidgetRefreshManager.loginFormKey, observer: this);
+  final String refreshManagerKey;
+  _RoundButtonState({this.engine, this.text, this.onPressed, this.refreshManagerKey}) {
+    if (refreshManagerKey != null) {
+      engine?.widgetRefreshManager?.addObserver(key: refreshManagerKey, observer: this);
+    }
   }
  
   @override
 	void dispose(){
 		super.dispose();
-    engine?.widgetRefreshManager?.removeObserver(key: WidgetRefreshManager.loginFormKey, observer: this);
+    if (refreshManagerKey != null) {
+      engine?.widgetRefreshManager?.removeObserver(key: refreshManagerKey, observer: this);
+    }
 	}
 
   @override

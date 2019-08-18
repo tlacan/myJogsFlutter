@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../Utils/localizable.dart';
 import '../Utils/constants.dart';
+import '../Utils/helper.dart';
 import './roundButton.dart';
 
 class HeaderLoginSignupWidget extends StatelessWidget {
@@ -30,7 +31,8 @@ class HeaderLoginSignupWidget extends StatelessWidget {
 
 class EmailTextField extends StatelessWidget {
   final void Function(String) onSaved;
-  EmailTextField({this.onSaved});
+  final bool withValidation;
+  EmailTextField({this.onSaved, this.withValidation = false});
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,7 @@ class EmailTextField extends StatelessWidget {
       Expanded(
           child: TextFormField(
               decoration: InputDecoration(
+                errorStyle: Constants.theme.errorText,
                 border: InputBorder.none,
                 hintText: Localizable.valuefor(
                     key: "COMMON.TEXTFIELD.REQUIRED", context: context),
@@ -53,16 +56,12 @@ class EmailTextField extends StatelessWidget {
               // The validator receives the text that the user has entered.
               validator: (value) {
                 onSaved(value);
-                /*
-                if (value.isEmpty) {
-                  return Localizable.valuefor(
-                      key: "SIGNUP.EMAIL.NOTVALID", context: context);
+                if (!withValidation || Helper.isNullOrEmpty(value)) {
+                  return null;
                 }
-                if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(value)) {
-                  return Localizable.valuefor(
-                      key: "SIGNUP.EMAIL.NOTVALID", context: context);
-                }*/
+                if (!RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+                  return Localizable.valuefor(key: "SIGNUP.EMAIL.NOTVALID", context: context);
+                }
                 return null;
               })),
     ]);
@@ -71,20 +70,23 @@ class EmailTextField extends StatelessWidget {
 
 class PasswordTextField extends StatelessWidget {
   final void Function(String) onSaved;
-  PasswordTextField({this.onSaved});
+  final bool withValidation;
+  final bool isConfirmation;
+  PasswordTextField({this.onSaved, this.withValidation = false, this.isConfirmation = false});
 
   @override
   Widget build(BuildContext context) {
     return Row(children: [
       Container(
-          width: 100,
+          width: isConfirmation ? 150 : 100,
           child: Text(
               Localizable.valuefor(
-                  key: "LOGIN.PASSWORD.TEXTFIELD", context: context),
+                  key: isConfirmation ? "SIGNUP.PASSWORD_CONFIRM.TEXTFIELD" : "LOGIN.PASSWORD.TEXTFIELD", context: context),
               style: Constants.theme.subtitle)),
       Expanded(
           child: TextFormField(
               decoration: InputDecoration(
+                errorStyle: Constants.theme.errorText,
                 border: InputBorder.none,
                 hintText: Localizable.valuefor(
                     key: "COMMON.TEXTFIELD.REQUIRED", context: context),
@@ -93,11 +95,13 @@ class PasswordTextField extends StatelessWidget {
               onSaved: onSaved,
               validator: (value) {
                 onSaved(value);
-                /*
-                if (value.isEmpty) {
-                  return Localizable.valuefor(
-                      key: "COMMON.TEXTFIELD.REQUIRED", context: context);
-                }*/
+                if (!withValidation) {
+                  return null;
+                }
+                int length = value?.length ?? 0;
+                if (length > 0 && length < 8) {
+                  return Localizable.valuefor(key: "SIGNUP.PASSWORD.NOTVALID", context: context);
+                }
                 return null;
               }))
     ]);

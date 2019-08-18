@@ -5,6 +5,7 @@ import 'package:my_jogs/Services/userService.dart';
 import '../Services/engine.dart';
 import '../Services/serviceState.dart';
 import '../Widgets/login.dart';
+import '../Widgets/signUp.dart';
 
 class MainWidget extends StatefulWidget {
   final Engine engine;
@@ -44,13 +45,20 @@ class _MainWidgetState extends State<MainWidget> implements UserServiceObserver 
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
-        items: engine.userService.userModel == null ? notConnectedItems() : connectedItems()
+        items: engine.userService.connected() ? connectedItems() : notConnectedItems()
         ,
       ),
       tabBuilder: (context, index) {
-        return Center(
-          child: LoginWidget(engine),
-        );
+        switch (index) {
+          case 0:
+            return engine.userService.connected() ? Center(child: Text("Tab 1")) : Center(child: LoginWidget(engine),);
+            break;
+          case 1:
+            return engine.userService.connected() ? Center(child: Text("Tab 2")) : Center(child: SignUpWidget(engine),);
+            break;
+          default:
+           return Center(child: Text("Tab x"));
+        }
       },
     );
   }

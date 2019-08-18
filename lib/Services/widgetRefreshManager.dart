@@ -4,6 +4,8 @@ abstract class WidgetRefresherManagerObserver {
 
 class WidgetRefreshManager {
   static final loginFormKey = "LoginForm";
+  static final signupFormKey = "SignUpForm";
+  static final signupPassworComfirmKey = "SignUpConfirm";
 
   Map<String,List<WidgetRefresherManagerObserver>> _observers = Map<String,List<WidgetRefresherManagerObserver>>();
 

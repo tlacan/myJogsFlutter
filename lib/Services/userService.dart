@@ -41,10 +41,9 @@ class UserService implements EngineComponent {
   removeObserver(UserServiceObserver observer) {
     _observers.remove(observer);
   }
-  loginBis() {
-    for (UserServiceObserver observer in _observers) {
-      observer.userDidLogin();
-    }
+  
+  bool connected() {
+    return userModel != null;
   }
 
   void setState({ServiceState newState, String error}) {
@@ -54,7 +53,7 @@ class UserService implements EngineComponent {
     }
   }
 
-  void login({String login, String password, BuildContext context}) async {
+  Future<String> login({String login, String password, BuildContext context}) async {
     setState(newState: ServiceState.loading);
     final response = await http.post(Constants.url.login, 
       body: {'login': login, 'password': password});
@@ -65,18 +64,33 @@ class UserService implements EngineComponent {
       var user = UserModel.fromJson(jsonResponse.decode(response.body));
       if (user == null) {
         setState(newState: ServiceState.error, error: Localizable.valuefor(key:"APIERROR.COMMON", context: context));
-        return;
+        return Localizable.valuefor(key:"APIERROR.COMMON", context: context);
       }
       userModel = user;
       for (UserServiceObserver observer in _observers) {
         observer.userDidLogin();
       }
       setState(newState: ServiceState.loaded);
-      return;
+      return null;
     } else if (response.statusCode == 400) {
       setState(newState: ServiceState.error, error: Localizable.valuefor(key:"APIERROR.WRONG_CREDENTIALS", context: context));
+      return Localizable.valuefor(key:"APIERROR.WRONG_CREDENTIALS", context: context);
     } else {
       setState(newState: ServiceState.error, error: Localizable.valuefor(key:"APIERROR.COMMON", context: context));
+      return Localizable.valuefor(key:"APIERROR.WRONG_CREDENTIALS", context: context);
+    }
+  }
+
+  Future<String> signUp({String login, String password, BuildContext context}) async {
+    setState(newState: ServiceState.loading);
+    final response = await http.post(Constants.url.signUp, 
+      body: {'login': login, 'password': password});
+    if (response.statusCode == 200) {
+      return this.login(login: login, password: password, context: context);
+    } else if (response.statusCode == 400) {
+      return Localizable.valuefor(key:"APIERROR.WRONG_CREDENTIALS", context: context);
+    } else {
+      return Localizable.valuefor(key:"APIERROR.COMMON", context: context);
     }
   }
 

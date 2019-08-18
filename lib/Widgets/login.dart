@@ -115,7 +115,8 @@ class LoginFormState extends State<LoginForm> implements UserServiceObserver {
     roundButton = RoundButton(
         engine: engine,
         text: Localizable.valuefor(key: "LOGIN.LOGIN.BUTTON", context: context),
-        onPressed: buttonOnPressed());
+        onPressed: buttonOnPressed(),
+        refreshManagerKey: WidgetRefreshManager.loginFormKey,);
     // Build a Form widget using the _formKey created above.
     return Form(
         key: _formKey,

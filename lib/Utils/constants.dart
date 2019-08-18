@@ -18,6 +18,7 @@ class _Urls {
 class _ColorValues {
   final darkGray = Color(0xFF454545);
   final lightGray = Color(0xFF7B7B7B);
+  final red = Color(0xFFD92028);
 }
 
 class _Theme {
@@ -26,6 +27,7 @@ class _Theme {
   final subtitle = TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500, color: Constants.colors.darkGray, fontFamily: "SF UI Display");
   final onboardingText = TextStyle(fontSize: 18.0, fontStyle: FontStyle.normal, color: Constants.colors.darkGray, fontFamily: "SF UI Display");
   final standardText = TextStyle(fontSize: 12.0, fontStyle: FontStyle.normal, color: Constants.colors.darkGray, fontFamily: "SF UI Display");
+  final errorText = TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold, color: Constants.colors.red, fontFamily: "SF UI Display");
 
  final themeData = CupertinoThemeData(
    textTheme: CupertinoTextThemeData(
