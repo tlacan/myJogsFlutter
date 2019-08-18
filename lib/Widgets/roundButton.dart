@@ -22,6 +22,12 @@ class _RoundButtonState extends State<RoundButton> implements WidgetRefresherMan
   _RoundButtonState({this.engine, this.text, this.onPressed}) {
     engine?.widgetRefreshManager?.addObserver(key: WidgetRefreshManager.loginFormKey, observer: this);
   }
+ 
+  @override
+	void dispose(){
+		super.dispose();
+    engine?.widgetRefreshManager?.removeObserver(key: WidgetRefreshManager.loginFormKey, observer: this);
+	}
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +35,7 @@ class _RoundButtonState extends State<RoundButton> implements WidgetRefresherMan
       height: 35,
       decoration: BoxDecoration(
         border: Border.all(
-                    color: Colors.black,
+                    color: onPressed == null ? Constants.colors.lightGray : Colors.black,
                     style: BorderStyle.solid,
                     width: 2.0,
                 ),
@@ -37,9 +43,11 @@ class _RoundButtonState extends State<RoundButton> implements WidgetRefresherMan
       ),
       child: 
       FlatButton(
-        disabledColor: Colors.orange,
-        disabledTextColor: Colors.black,//Colors.lightGray,
-        child: Text(widget.text, style: Constants.theme.subtitle),
+        disabledTextColor: Constants.colors.lightGray,
+        child: Text(widget.text, 
+                style:  TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500, 
+                color: onPressed == null ? Constants.colors.lightGray : Colors.black, 
+                fontFamily: "SF UI Display")),
         onPressed: onPressed,
       ),
     );
@@ -47,7 +55,7 @@ class _RoundButtonState extends State<RoundButton> implements WidgetRefresherMan
 
   @override
   void doRefresh(Object value) {
-    if (value is VoidCallback == false) {
+    if (value is VoidCallback == false && value != null) {
       return;
     }
     setState(() { 

@@ -5,15 +5,18 @@ import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
 import './engine.dart';
+import './serviceState.dart';
 import '../Utils/constants.dart';
 import '../Utils/localizable.dart';
 
 abstract class UserServiceObserver {
+  void onUserService({UserService userService, ServiceState state, String error});
   void userDidLogin();
 }
 
 class UserService implements EngineComponent {
   final LocalStorage storageManager;
+  ServiceState state = ServiceState.idle;
 
   List<UserServiceObserver> _observers = List();
   UserModel _userModel;
@@ -26,6 +29,7 @@ class UserService implements EngineComponent {
       return;
     }
     storageManager.setItem(UserModel.storageKey, userModel);
+    state = ServiceState.loaded;
   }
 
   UserService({this.storageManager});
@@ -43,7 +47,15 @@ class UserService implements EngineComponent {
     }
   }
 
-  Future<UserModel> login({String login, String password, BuildContext context}) async {
+  void setState({ServiceState newState, String error}) {
+    state = newState;
+    for (UserServiceObserver observer in _observers) {
+      observer.onUserService(userService: this, state: state, error: error);
+    }
+  }
+
+  void login({String login, String password, BuildContext context}) async {
+    setState(newState: ServiceState.loading);
     final response = await http.post(Constants.url.login, 
       body: {'login': login, 'password': password});
         
@@ -51,15 +63,20 @@ class UserService implements EngineComponent {
       var jsonResponse = convert.jsonDecode(response.body);
       // If server returns an OK response, parse the JSON.
       var user = UserModel.fromJson(jsonResponse.decode(response.body));
+      if (user == null) {
+        setState(newState: ServiceState.error, error: Localizable.valuefor(key:"APIERROR.COMMON", context: context));
+        return;
+      }
       userModel = user;
       for (UserServiceObserver observer in _observers) {
         observer.userDidLogin();
       }
-      return user;
-    } else if (response.statusCode == 500) {
-      throw Exception(Localizable.valuefor(key:"APIERROR.COMMON", context: context));
+      setState(newState: ServiceState.loaded);
+      return;
+    } else if (response.statusCode == 400) {
+      setState(newState: ServiceState.error, error: Localizable.valuefor(key:"APIERROR.WRONG_CREDENTIALS", context: context));
     } else {
-      throw Exception(Localizable.valuefor(key:"APIERROR.COMMON", context: context));
+      setState(newState: ServiceState.error, error: Localizable.valuefor(key:"APIERROR.COMMON", context: context));
     }
   }
 
@@ -72,7 +89,9 @@ class UserService implements EngineComponent {
   }
 
   @override
-    userDidLogOut() {
+  userDidLogOut() {
 
   }
+
+
 }

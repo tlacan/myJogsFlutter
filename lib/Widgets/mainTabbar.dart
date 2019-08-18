@@ -3,6 +3,7 @@ import 'package:my_jogs/Models/UserModel.dart';
 import 'package:my_jogs/Services/userService.dart';
 
 import '../Services/engine.dart';
+import '../Services/serviceState.dart';
 import '../Widgets/login.dart';
 
 class MainWidget extends StatefulWidget {
@@ -18,6 +19,12 @@ class _MainWidgetState extends State<MainWidget> implements UserServiceObserver 
   _MainWidgetState(this.engine) {
     engine.userService.addObserver(this);
   }
+
+  @override
+	void dispose(){
+		super.dispose();
+    engine.userService.removeObserver(this);
+	}
 
   List<BottomNavigationBarItem> connectedItems() {
     return [BottomNavigationBarItem(
@@ -48,8 +55,11 @@ class _MainWidgetState extends State<MainWidget> implements UserServiceObserver 
     );
   }
 
-  @override
   void userDidLogin() {
     setState(() {});
+  }
+
+  void onUserService({UserService userService, ServiceState state, String error}) {
+    
   }
 }
