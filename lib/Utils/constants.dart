@@ -11,7 +11,7 @@ class _Urls {
   static final _baseUrl = "http://localhost:8080";
 
   final login = "$_baseUrl/login";
-  final signUp = "$_baseUrl/signUp";
+  final signUp = "$_baseUrl/register";
   final jogs = "$_baseUrl/jogs";
 }
 

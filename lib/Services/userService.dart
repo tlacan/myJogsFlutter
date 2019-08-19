@@ -56,12 +56,12 @@ class UserService implements EngineComponent {
   Future<String> login({String login, String password, BuildContext context}) async {
     setState(newState: ServiceState.loading);
     final response = await http.post(Constants.url.login, 
-      body: {'login': login, 'password': password});
+      body: {'email': login, 'password': password});
         
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body);
       // If server returns an OK response, parse the JSON.
-      var user = UserModel.fromJson(jsonResponse.decode(response.body));
+      var user = UserModel.fromJson(jsonResponse);
       if (user == null) {
         setState(newState: ServiceState.error, error: Localizable.valuefor(key:"APIERROR.COMMON", context: context));
         return Localizable.valuefor(key:"APIERROR.COMMON", context: context);
@@ -84,7 +84,7 @@ class UserService implements EngineComponent {
   Future<String> signUp({String login, String password, BuildContext context}) async {
     setState(newState: ServiceState.loading);
     final response = await http.post(Constants.url.signUp, 
-      body: {'login': login, 'password': password});
+      body: {'email': login, 'password': password});
     if (response.statusCode == 200) {
       return this.login(login: login, password: password, context: context);
     } else if (response.statusCode == 400) {

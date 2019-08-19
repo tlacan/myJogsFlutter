@@ -99,7 +99,7 @@ class SingUpFormState extends State<SingUpForm> {
       setState(() {
         isLoaging = true;
       });
-      //signUp();
+      signUp();
     }
   }
 
