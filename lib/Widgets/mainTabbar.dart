@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:my_jogs/Models/UserModel.dart';
 import 'package:my_jogs/Services/userService.dart';
+import 'package:my_jogs/Services/widgetRefreshManager.dart';
 
 import '../Services/engine.dart';
 import '../Services/serviceState.dart';
@@ -15,16 +16,21 @@ class MainWidget extends StatefulWidget {
   _MainWidgetState createState() => _MainWidgetState(engine);
 }
 
-class _MainWidgetState extends State<MainWidget> implements UserServiceObserver {
+class _MainWidgetState extends State<MainWidget> implements UserServiceObserver, WidgetRefresherManagerObserver {
   final Engine engine;
+  int currentIndex;
+
   _MainWidgetState(this.engine) {
+    currentIndex = 0;
     engine.userService.addObserver(this);
+    engine.widgetRefreshManager.addObserver(key: WidgetRefreshManager.tabBarKey, observer: this);
   }
 
   @override
 	void dispose(){
 		super.dispose();
     engine.userService.removeObserver(this);
+    engine.widgetRefreshManager.removeObserver(key: WidgetRefreshManager.tabBarKey, observer: this);
 	}
 
   List<BottomNavigationBarItem> connectedItems() {
@@ -46,7 +52,7 @@ class _MainWidgetState extends State<MainWidget> implements UserServiceObserver 
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         items: engine.userService.connected() ? connectedItems() : notConnectedItems()
-        ,
+        , currentIndex: currentIndex,
       ),
       tabBuilder: (context, index) {
         switch (index) {
@@ -69,5 +75,12 @@ class _MainWidgetState extends State<MainWidget> implements UserServiceObserver 
 
   void onUserService({UserService userService, ServiceState state, String error}) {
     
+  }
+
+  @override
+  void doRefresh(Object value) {
+    setState(() {
+      currentIndex = value;
+    });
   }
 }

@@ -36,7 +36,9 @@ class _SignUpWidgetState extends State<SignUpWidget> {
             child: HeaderLoginSignupWidget(
                 buttonText: Localizable.valuefor(
                     key: "SIGNUP.BARITEM.LOGIN", context: context),
-                onPressed: () {}),
+                onPressed: () {
+                  engine.widgetRefreshManager.notifyRefresh(key: WidgetRefreshManager.tabBarKey, value: 0);
+                }),
           ),
           Container(
             child: SizedBox(
@@ -127,7 +129,7 @@ class SingUpFormState extends State<SingUpForm> {
     if (Helper.isNullOrEmpty(password) || Helper.isNullOrEmpty(confirmPassword)) {
       return false;
     }
-    return password == confirmPassword;
+    return password != confirmPassword;
   }
 
   @override

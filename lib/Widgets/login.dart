@@ -37,7 +37,9 @@ class _LoginWidgetState extends State<LoginWidget> {
             child: HeaderLoginSignupWidget(
                 buttonText: Localizable.valuefor(
                     key: "LOGIN.BARITEM.SIGNUP", context: context),
-                onPressed: () {}),
+                onPressed: () {
+                  engine.widgetRefreshManager.notifyRefresh(key: WidgetRefreshManager.tabBarKey, value: 1);
+                }),
           ),
           Container(
             child: SizedBox(
