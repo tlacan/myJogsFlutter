@@ -18,10 +18,9 @@ class MainWidget extends StatefulWidget {
 
 class _MainWidgetState extends State<MainWidget> implements UserServiceObserver, WidgetRefresherManagerObserver {
   final Engine engine;
-  int currentIndex;
+  final CupertinoTabController _controller = CupertinoTabController();
 
   _MainWidgetState(this.engine) {
-    currentIndex = 0;
     engine.userService.addObserver(this);
     engine.widgetRefreshManager.addObserver(key: WidgetRefreshManager.tabBarKey, observer: this);
   }
@@ -29,6 +28,7 @@ class _MainWidgetState extends State<MainWidget> implements UserServiceObserver,
   @override
 	void dispose(){
 		super.dispose();
+    _controller.dispose();
     engine.userService.removeObserver(this);
     engine.widgetRefreshManager.removeObserver(key: WidgetRefreshManager.tabBarKey, observer: this);
 	}
@@ -50,9 +50,9 @@ class _MainWidgetState extends State<MainWidget> implements UserServiceObserver,
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
+      controller: _controller,
       tabBar: CupertinoTabBar(
-        items: engine.userService.connected() ? connectedItems() : notConnectedItems()
-        , currentIndex: currentIndex,
+        items: engine.userService.connected() ? connectedItems() : notConnectedItems(),
       ),
       tabBuilder: (context, index) {
         switch (index) {
@@ -79,8 +79,6 @@ class _MainWidgetState extends State<MainWidget> implements UserServiceObserver,
 
   @override
   void doRefresh(Object value) {
-    setState(() {
-      currentIndex = value;
-    });
+    _controller.index = value;
   }
 }
