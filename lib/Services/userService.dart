@@ -1,21 +1,25 @@
 import 'package:flutter/widgets.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:my_jogs/Models/UserModel.dart';
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
+import 'package:my_jogs/Models/sessionModel.dart';
 
 import './engine.dart';
 import './serviceState.dart';
+import './sessionService.dart';
 import '../Utils/constants.dart';
 import '../Utils/localizable.dart';
+import '../Models/userModel.dart';
 
 abstract class UserServiceObserver {
   void onUserService({UserService userService, ServiceState state, String error});
   void userDidLogin();
+  void userDidLogout();
 }
 
 class UserService implements EngineComponent {
   final LocalStorage storageManager;
+  final SessionService sessionService;
   ServiceState state = ServiceState.idle;
 
   List<UserServiceObserver> _observers = List();
@@ -32,7 +36,7 @@ class UserService implements EngineComponent {
     state = ServiceState.loaded;
   }
 
-  UserService({this.storageManager});
+  UserService({this.storageManager, this.sessionService});
 
   addObserver(UserServiceObserver observer) {
     _observers.add(observer);
@@ -62,11 +66,13 @@ class UserService implements EngineComponent {
       var jsonResponse = convert.jsonDecode(response.body);
       // If server returns an OK response, parse the JSON.
       var user = UserModel.fromJson(jsonResponse);
-      if (user == null) {
+      var session = SessionModel.fromJson(jsonResponse);
+      if (user == null || session == null) {
         setState(newState: ServiceState.error, error: Localizable.valuefor(key:"APIERROR.COMMON", context: context));
         return Localizable.valuefor(key:"APIERROR.COMMON", context: context);
       }
-      userModel = user;
+      sessionService.sessionModel = session;
+      userModel =  UserModel(email: login, password: password, userId: user.userId);
       for (UserServiceObserver observer in _observers) {
         observer.userDidLogin();
       }
@@ -104,8 +110,9 @@ class UserService implements EngineComponent {
 
   @override
   userDidLogOut() {
-
+    userModel = null;
+    for (UserServiceObserver observer in _observers) {
+        observer.userDidLogout();
+      }
   }
-
-
 }

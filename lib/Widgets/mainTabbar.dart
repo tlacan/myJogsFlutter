@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:my_jogs/Models/UserModel.dart';
-import 'package:my_jogs/Services/userService.dart';
-import 'package:my_jogs/Services/widgetRefreshManager.dart';
 
+import '../manager/widgetRefreshManager.dart';
 import '../Services/engine.dart';
 import '../Services/serviceState.dart';
+import '../Services/userService.dart';
 import '../Widgets/login.dart';
 import '../Widgets/signUp.dart';
 
@@ -70,6 +69,10 @@ class _MainWidgetState extends State<MainWidget> implements UserServiceObserver,
   }
 
   void userDidLogin() {
+    setState(() {});
+  }
+
+  void userDidLogout() {
     setState(() {});
   }
 

@@ -9,7 +9,7 @@ import '../Utils/localizable.dart';
 import './roundButton.dart';
 import '../Utils/helper.dart';
 import '../Utils/constants.dart';
-import '../Services/widgetRefreshManager.dart';
+import '../manager/widgetRefreshManager.dart';
 import './loginSignup.dart';
 import './alert.dart';
 
@@ -161,6 +161,11 @@ class LoginFormState extends State<LoginForm> implements UserServiceObserver {
 
   @override
   void userDidLogin() {
+    return;
+  }
+
+  @override
+  void userDidLogout() {
     return;
   }
 }

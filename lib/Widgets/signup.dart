@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_lottie/flutter_lottie.dart';
-import 'package:my_jogs/Services/userService.dart';
 
 import '../Services/engine.dart';
 import '../Utils/localizable.dart';
 import './roundButton.dart';
 import '../Utils/helper.dart';
 import '../Utils/constants.dart';
-import '../Services/widgetRefreshManager.dart';
+import '../manager/widgetRefreshManager.dart';
 import './loginSignup.dart';
 import './alert.dart';
 

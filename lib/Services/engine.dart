@@ -1,6 +1,7 @@
 import 'package:localstorage/localstorage.dart';
 import './userService.dart';
-import './widgetRefreshManager.dart';
+import './sessionService.dart';
+import '../manager/widgetRefreshManager.dart';
 
 abstract class EngineComponent {
   userDidLogOut();
@@ -23,13 +24,16 @@ class _EngineState {
 class Engine {
   final LocalStorage storageManager = LocalStorage("Engine");
   UserService userService;
+  SessionService sessionService;
   final WidgetRefreshManager widgetRefreshManager = WidgetRefreshManager();
   List<EngineComponent> components = List();
   _EngineState engineState = _EngineState(onboardingCompleted: false);
 
   Engine() {
-    userService = UserService(storageManager: storageManager);
+    sessionService = SessionService(storageManager: storageManager);
+    userService = UserService(storageManager: storageManager, sessionService: sessionService);
     components.add(userService);
+    components.add(sessionService);
   }
 
   loadDataInStoreManager() {
