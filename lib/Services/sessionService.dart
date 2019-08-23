@@ -19,7 +19,7 @@ class SessionService implements EngineComponent {
       storageManager.deleteItem(SessionModel.storageKey); 
       return;
     }
-    storageManager.setItem(SessionModel.storageKey, sessionModel);
+    storageManager.setItem(SessionModel.storageKey, sessionModel.encrypted());
   }
 
   Map<String, String> sessionHeader() {
@@ -33,7 +33,7 @@ class SessionService implements EngineComponent {
   storageReady() {
     final storedUserModelNotMapped = storageManager.getItem(SessionModel.storageKey);
     if (storedUserModelNotMapped != null) {
-      sessionModel = SessionModel.fromJson(storedUserModelNotMapped);
+      sessionModel = SessionModel.fromJson(storedUserModelNotMapped).decrypted();
     }
   }
 
