@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:my_jogs/Utils/localizable.dart';
-import 'package:my_jogs/Widgets/settings.dart';
 
+import 'package:my_jogs/Utils/localizable.dart';
+import 'package:my_jogs/Widgets/newJog.dart';
+import 'package:my_jogs/Widgets/settings.dart';
 import '../manager/widgetRefreshManager.dart';
 import '../Services/engine.dart';
 import '../Services/serviceState.dart';
@@ -65,7 +66,7 @@ class _MainWidgetState extends State<MainWidget> implements UserServiceObserver,
             return engine.userService.connected() ? Center(child: Text("Tab 1")) : Center(child: LoginWidget(engine),);
             break;
           case 1:
-            return engine.userService.connected() ? Center(child: Text("Tab 2")) : Center(child: SignUpWidget(engine),);
+            return engine.userService.connected() ? NewJogWidget(engine: engine) : Center(child: SignUpWidget(engine),);
             break;
           case 2:
             return engine.userService.connected() ? SettingsWidget(engine: engine) : Center(child: SignUpWidget(engine),);

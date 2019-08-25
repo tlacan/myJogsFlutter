@@ -25,6 +25,7 @@ class _ColorValues {
 class _Theme {
   final appTitle = TextStyle(fontSize: 72.0, color: Constants.colors.darkGray, fontFamily: "Futura-Bold");
   final title = TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold, color: Constants.colors.darkGray, fontFamily: "SF UI Display");
+  final chromo = TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold, color: Colors.white, fontFamily: "SF UI Display");
   final subtitle = TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500, color: Constants.colors.darkGray, fontFamily: "SF UI Display");
   final onboardingText = TextStyle(fontSize: 18.0, fontStyle: FontStyle.normal, color: Constants.colors.darkGray, fontFamily: "SF UI Display");
   final standardText = TextStyle(fontSize: 12.0, fontStyle: FontStyle.normal, color: Constants.colors.darkGray, fontFamily: "SF UI Display");
