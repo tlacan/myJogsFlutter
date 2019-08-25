@@ -19,6 +19,7 @@ class _ColorValues {
   final darkGray = Color(0xFF454545);
   final lightGray = Color(0xFF7B7B7B);
   final red = Color(0xFFD92028);
+  final border = Color(0xFFC8C7CC);
 }
 
 class _Theme {

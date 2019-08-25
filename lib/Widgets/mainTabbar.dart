@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:my_jogs/Utils/localizable.dart';
+import 'package:my_jogs/Widgets/settings.dart';
 
 import '../manager/widgetRefreshManager.dart';
 import '../Services/engine.dart';
@@ -34,16 +36,18 @@ class _MainWidgetState extends State<MainWidget> implements UserServiceObserver,
 
   List<BottomNavigationBarItem> connectedItems() {
     return [BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.circle), title: Text("Jambon")),
+            icon: Icon(CupertinoIcons.collections), title: Text(Localizable.valuefor(key: "TABBAR.ITEM.1", context: context))),
           BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.clock), title: Text("Fromage"))];
+            icon: Icon(CupertinoIcons.add_circled), title: Text(Localizable.valuefor(key: "TABBAR.ITEM.2", context: context))),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.gear), title: Text(Localizable.valuefor(key: "TABBAR.ITEM.3", context: context)))];
   }
 
   List<BottomNavigationBarItem> notConnectedItems() {
     return [BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.circle), title: Text("Login")),
+              icon: Icon(CupertinoIcons.person), title: Text(Localizable.valuefor(key: "TABBAR.NOTCONNECTED.ITEM.1", context: context))),
           BottomNavigationBarItem(
-              icon: Icon(CupertinoIcons.clock), title: Text("Signup"))];
+              icon: Icon(CupertinoIcons.person_add), title: Text(Localizable.valuefor(key: "TABBAR.NOTCONNECTED.ITEM.2", context: context)))];
   }
 
   @override
@@ -51,6 +55,8 @@ class _MainWidgetState extends State<MainWidget> implements UserServiceObserver,
     return CupertinoTabScaffold(
       controller: _controller,
       tabBar: CupertinoTabBar(
+        activeColor: CupertinoColors.black,
+        inactiveColor: CupertinoColors.inactiveGray,
         items: engine.userService.connected() ? connectedItems() : notConnectedItems(),
       ),
       tabBuilder: (context, index) {
@@ -61,6 +67,8 @@ class _MainWidgetState extends State<MainWidget> implements UserServiceObserver,
           case 1:
             return engine.userService.connected() ? Center(child: Text("Tab 2")) : Center(child: SignUpWidget(engine),);
             break;
+          case 2:
+            return engine.userService.connected() ? SettingsWidget(engine: engine) : Center(child: SignUpWidget(engine),);
           default:
            return Center(child: Text("Tab x"));
         }
@@ -73,7 +81,9 @@ class _MainWidgetState extends State<MainWidget> implements UserServiceObserver,
   }
 
   void userDidLogout() {
-    setState(() {});
+    setState(() {
+      _controller.index = 0;
+    });
   }
 
   void onUserService({UserService userService, ServiceState state, String error}) {

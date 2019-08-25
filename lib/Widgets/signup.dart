@@ -84,7 +84,7 @@ class SingUpFormState extends State<SingUpForm> {
   String confirmPassword;
   RoundButton roundButton;
   PasswordConfirmErrorText passwordConfirmErrorText;
-  bool isLoaging = false;
+  bool isLoading = false;
   bool displayingDifferentConfirmPassword = false;
   String errorMessage;
 
@@ -96,7 +96,7 @@ class SingUpFormState extends State<SingUpForm> {
     if (valid) {
       form.save();
       setState(() {
-        isLoaging = true;
+        isLoading = true;
       });
       signUp();
     }
@@ -105,7 +105,7 @@ class SingUpFormState extends State<SingUpForm> {
   void signUp() async {
     String error = await engine.userService.signUp(login: email, password: password, context: context);
     setState(() {
-      isLoaging = false;
+      isLoading = false;
     });
     if (error != null) {
       AlertWidget.presentDialog(messsage: error, context: context);
@@ -145,7 +145,7 @@ class SingUpFormState extends State<SingUpForm> {
         key: _formKey,
         autovalidate: true,
         child: 
-        isLoaging ? CircularProgressIndicator(backgroundColor: Colors.black,) :
+        isLoading ? CircularProgressIndicator(backgroundColor: Colors.black,) :
         Column(children: [
           EmailTextField(onSaved: (value) {
             final oldValue = email;

@@ -1,6 +1,8 @@
 import 'package:localstorage/localstorage.dart';
+
 import './userService.dart';
 import './sessionService.dart';
+import './settingsService.dart';
 import '../manager/widgetRefreshManager.dart';
 
 abstract class EngineComponent {
@@ -25,6 +27,7 @@ class Engine {
   final LocalStorage storageManager = LocalStorage("Engine");
   UserService userService;
   SessionService sessionService;
+  SettingsService settingsService;
   final WidgetRefreshManager widgetRefreshManager = WidgetRefreshManager();
   List<EngineComponent> components = List();
   _EngineState engineState = _EngineState(onboardingCompleted: false);
@@ -32,6 +35,8 @@ class Engine {
   Engine() {
     sessionService = SessionService(storageManager: storageManager);
     userService = UserService(storageManager: storageManager, sessionService: sessionService);
+    settingsService = SettingsService(storageManager: storageManager);
+    components.add(settingsService);
     components.add(userService);
     components.add(sessionService);
   }

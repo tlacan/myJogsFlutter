@@ -1,6 +1,5 @@
 
 import 'package:localstorage/localstorage.dart';
-import 'package:my_jogs/Models/sessionModel.dart';
 
 import '../Models/sessionModel.dart';
 import 'engine.dart';
@@ -14,7 +13,7 @@ class SessionService implements EngineComponent {
 
   SessionModel get sessionModel => _sessionModel;
   set sessionModel(SessionModel sessionModel) {
-    this._sessionModel = _sessionModel;
+    this._sessionModel = sessionModel;
     if (sessionModel == null) {
       storageManager.deleteItem(SessionModel.storageKey); 
       return;
@@ -31,16 +30,15 @@ class SessionService implements EngineComponent {
 
   @override
   storageReady() {
-    final storedUserModelNotMapped = storageManager.getItem(SessionModel.storageKey);
-    if (storedUserModelNotMapped != null) {
-      sessionModel = SessionModel.fromJson(storedUserModelNotMapped).decrypted();
+    final storedSessionModelNotMapped = storageManager.getItem(SessionModel.storageKey);
+    if (storedSessionModelNotMapped != null) {
+      sessionModel = SessionModel.fromJson(storedSessionModelNotMapped).decrypted();
     }
   }
 
   @override
   userDidLogOut() {
     this.sessionModel = null;
-    return null;
   }
 
 }

@@ -40,9 +40,12 @@ class Localizable {
  ** Tabbar
  */
 
-      "TABBAR.ITEM.1": "Record",
-      "TABBAR.ITEM.2": "History",
+      "TABBAR.ITEM.1": "History",
+      "TABBAR.ITEM.2": "New jog",
       "TABBAR.ITEM.3": "Settings",
+
+      "TABBAR.NOTCONNECTED.ITEM.1": "Login",
+      "TABBAR.NOTCONNECTED.ITEM.2": "Signup",
 
 /*
  *********************************
@@ -82,6 +85,16 @@ class Localizable {
       "SIGNUP.PASSWORD.NOTVALID": "Password must be at least 8 characters",
       "SIGNUP.PASSWORD.DIFFERENT": "Passwords different",
       "SIGNUP.SIGNUP.BUTTON": "Sign up",
+
+/*
+ *********************************
+ ** SETTINGS
+ */
+
+      "SETTINGS.TITLE": "Settings",
+      "SETTINGS.TARGET.LABEL": "Target speed",
+      "SETTINGS.DELTA.LABEL": "Speed tolerance",
+      "SETTINGS.LOGOUT.BUTTON": "Logout",
 
 /*
  *********************************

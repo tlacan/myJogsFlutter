@@ -72,13 +72,13 @@ class UserService implements EngineComponent {
         return Localizable.valuefor(key:"APIERROR.COMMON", context: context);
       }
       sessionService.sessionModel = session;
-      userModel =  UserModel(email: login, password: password, userId: user.userId);
+      userModel =  UserModel(email: login, userId: user.userId);
       for (UserServiceObserver observer in _observers) {
         observer.userDidLogin();
       }
       setState(newState: ServiceState.loaded);
       return null;
-    } else if (response.statusCode == 400) {
+    } else if (response.statusCode == 500) {
       setState(newState: ServiceState.error, error: Localizable.valuefor(key:"APIERROR.WRONG_CREDENTIALS", context: context));
       return Localizable.valuefor(key:"APIERROR.WRONG_CREDENTIALS", context: context);
     } else {
@@ -88,13 +88,12 @@ class UserService implements EngineComponent {
   }
 
   Future<String> signUp({String login, String password, BuildContext context}) async {
-    setState(newState: ServiceState.loading);
     final response = await http.post(Constants.url.signUp, 
       body: {'email': login, 'password': password});
     if (response.statusCode == 200) {
       return this.login(login: login, password: password, context: context);
-    } else if (response.statusCode == 400) {
-      return Localizable.valuefor(key:"APIERROR.WRONG_CREDENTIALS", context: context);
+    } else if (response.statusCode == 409) {
+      return Localizable.valuefor(key:"APIERROR.USER_EXISTS", context: context);
     } else {
       return Localizable.valuefor(key:"APIERROR.COMMON", context: context);
     }

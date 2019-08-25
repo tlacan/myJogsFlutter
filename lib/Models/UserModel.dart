@@ -3,14 +3,15 @@ class UserModel {
   static final storageKey = "userModel";
   int userId;
   String email;
-  String password;
     
-  UserModel({this.userId, this.email, this.password});
+  UserModel({this.userId, this.email});
 
   UserModel.fromJson(Map<String, dynamic> json)
-    : userId = json['userId'];
+    : userId = json['userId'],
+      email = json['email'];
 
   Map<String, dynamic> toJson() => {
     'userId': userId,
+    'email': email,
   };
 }
