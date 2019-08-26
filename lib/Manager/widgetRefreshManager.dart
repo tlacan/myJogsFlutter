@@ -7,6 +7,7 @@ class WidgetRefreshManager {
   static final signupFormKey = "SignUpForm";
   static final signupPassworComfirmKey = "SignUpConfirm";
   static final tabBarKey = "TabbarKey";
+  static final speedKey = "SpeedKey";
 
   Map<String,List<WidgetRefresherManagerObserver>> _observers = Map<String,List<WidgetRefresherManagerObserver>>();
 

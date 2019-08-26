@@ -51,7 +51,7 @@ class Localizable {
  *********************************
  ** Jog view
  */
-
+      "JOG.ERROR.AUTHORIZATION": "Location Authorization has been denied, can not record a new jog",
       "JOG.SAVE.BUTTON": "Save",
       "JOG.CANCEL.BUTTON": "Cancel",
       "JOG.START.BUTTON": "Start",

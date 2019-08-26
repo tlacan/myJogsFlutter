@@ -1,9 +1,11 @@
 import 'package:localstorage/localstorage.dart';
 import 'package:my_jogs/Services/jogsService.dart';
+import 'package:my_jogs/Services/locationService.dart';
 
 import './userService.dart';
 import './sessionService.dart';
 import './settingsService.dart';
+import './locationService.dart';
 import '../manager/widgetRefreshManager.dart';
 
 abstract class EngineComponent {
@@ -29,6 +31,7 @@ class Engine {
   UserService userService;
   SessionService sessionService;
   SettingsService settingsService;
+  LocationService locationService;
   JogsService jogsService;
   final WidgetRefreshManager widgetRefreshManager = WidgetRefreshManager();
   List<EngineComponent> components = List();
@@ -39,10 +42,12 @@ class Engine {
     userService = UserService(storageManager: storageManager, sessionService: sessionService);
     settingsService = SettingsService(storageManager: storageManager);
     jogsService = JogsService(storageManager: storageManager);
+    locationService = LocationService();
     components.add(jogsService);
     components.add(settingsService);
     components.add(userService);
     components.add(sessionService);
+    components.add(locationService);
   }
 
   loadDataInStoreManager() {

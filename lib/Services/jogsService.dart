@@ -16,6 +16,7 @@ class JogsService implements EngineComponent {
   ServiceState state = ServiceState.idle;
   List<JogModel> _jogs = List();
   List<JogsServiceObserver> _observers = List();
+  Stopwatch stopwatch = Stopwatch();
 
   JogsService({this.storageManager, this.sessionService});
 
@@ -27,6 +28,19 @@ class JogsService implements EngineComponent {
       return;
     }
     storageManager.setItem(JogModel.storageKey, _jogs);
+  }
+
+  void startTimer() {
+    stopwatch.reset();
+    stopwatch.start();
+  }
+
+  void pauseTimer() {
+    if (stopwatch.isRunning) {
+      stopwatch.stop();
+      return;
+    }
+    stopwatch.start();
   }
 
   void addJog(JogModel jog) {
@@ -54,8 +68,6 @@ class JogsService implements EngineComponent {
     }
   }
 
-  
-
   @override
   storageReady() {
     final storedJogsNotMapped = storageManager.getItem(JogModel.storageKey);
@@ -70,6 +82,7 @@ class JogsService implements EngineComponent {
   @override
   userDidLogOut() {
     jogs = List();
+    stopwatch.reset();
   }
 
 }
