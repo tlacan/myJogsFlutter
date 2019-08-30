@@ -43,6 +43,10 @@ class JogsService implements EngineComponent {
     stopwatch.start();
   }
 
+  void resetTimer() {
+    stopwatch.reset();
+  }
+
   void addJog(JogModel jog) {
     jogs.add(jog);
     storageManager.setItem(JogModel.storageKey, _jogs);

@@ -17,10 +17,12 @@ class NewJogWidget extends StatefulWidget {
   _NewJogWidgetState createState() => _NewJogWidgetState(engine: engine);
 }
 
-class _NewJogWidgetState extends State<NewJogWidget> implements LocationServiceObserver {
+class _NewJogWidgetState extends State<NewJogWidget>
+    implements LocationServiceObserver {
   final Engine engine;
   List<LocationData> locations = new List();
   DateTime start;
+  bool isLoading = false;
   _NewJogWidgetState({this.engine});
 
   @override
@@ -38,36 +40,83 @@ class _NewJogWidgetState extends State<NewJogWidget> implements LocationServiceO
   }
 
   void initializeLocation() async {
-    await engine.locationService.location.changeSettings(accuracy: LocationAccuracy.HIGH, interval: 1000);
+    await engine.locationService.location
+        .changeSettings(accuracy: LocationAccuracy.HIGH, interval: 1000);
     bool serviceStatus = await engine.locationService.location.serviceEnabled();
     print("Service status: $serviceStatus");
     if (serviceStatus) {
-      bool permission = await engine.locationService.location.requestPermission();
+      bool permission =
+          await engine.locationService.location.requestPermission();
       if (!permission) {
-        AlertWidget.presentDialog(messsage: Localizable.valuefor(key: "JOG.ERROR.AUTHORIZATION", context: context), context: context);
+        AlertWidget.presentDialog(
+            messsage: Localizable.valuefor(
+                key: "JOG.ERROR.AUTHORIZATION", context: context),
+            context: context);
       }
     }
   }
 
   void startPressed() {
-    start = DateTime.now();
-    engine.locationService.startTracking();
-    engine.jogsService.startTimer();
+    setState(() {
+      start = DateTime.now();
+      engine.locationService.startTracking();
+      engine.jogsService.startTimer();
+    });
   }
 
   void pausePressed() {
-    if (engine.jogsService.stopwatch.isRunning) {
-      engine.locationService.stopTracking();
-    } else {
-      engine.locationService.startTracking();
-    }
-    engine.jogsService.pauseTimer();
+    setState(() {
+      if (engine.jogsService.stopwatch.isRunning) {
+        engine.locationService.stopTracking();
+      } else {
+        engine.locationService.startTracking();
+      }
+      engine.jogsService.pauseTimer();
+    });
+    engine.widgetRefreshManager
+        .notifyRefresh(key: WidgetRefreshManager.speedKey, value: null);
   }
 
   void resetPressed() {
+    setState(() {
+      start = null;
+      locations = new List();
+      engine.locationService.stopTracking();
+      engine.jogsService.resetTimer();
+    });
+    engine.widgetRefreshManager
+        .notifyRefresh(key: WidgetRefreshManager.speedKey, value: null);
+  }
+
+  void savePressed() {
+    setState(() {
+      isLoading = true;
+    });
+    engine.widgetRefreshManager
+        .notifyRefresh(key: WidgetRefreshManager.speedKey, value: null);
+    engine.locationService.stopTracking();
+    engine.jogsService.pauseTimer();
+
     locations = new List();
-    engine.locationService.startTracking();
-    engine.jogsService.startTimer();
+  }
+
+  bool speedValid() {
+    if (locations.isNotEmpty) {
+      LocationData lastLocation = locations.last;
+      double speed = lastLocation.speed;
+      double speedTarget = engine.settingsService.settingsModel.speedTarget;
+      if (speed > speedTarget) {
+        return (speed -
+                (speedTarget *
+                    engine.settingsService.settingsModel.toleranceValue)) <=
+            speedTarget;
+      }
+      return (speed +
+              (speedTarget *
+                  engine.settingsService.settingsModel.toleranceValue)) >=
+          speedTarget;
+    }
+    return false;
   }
 
   @override
@@ -77,31 +126,97 @@ class _NewJogWidgetState extends State<NewJogWidget> implements LocationServiceO
         child: SafeArea(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                TimerTextWidget(engine: engine),
-                SpeedTextWidget(engine: engine),
-                Row(children: <Widget>[
-                  FlatButton(onPressed: startPressed, child: Text("start"), textColor: Colors.white,),
-                  FlatButton(onPressed: engine.jogsService.pauseTimer, child: Text("pause"), textColor: Colors.white,),
-                ],)
-              ]
-            ),
-        )
-    );
+              children: isLoading
+                  ? [
+                      CircularProgressIndicator(
+                        backgroundColor: Colors.yellow,
+                      )
+                    ]
+                  : <Widget>[
+                      TimerTextWidget(engine: engine),
+                      SpeedTextWidget(engine: engine),
+                      Spacer(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: start != null
+                            ? <Widget>[
+                              Spacer(),
+                                TimerButtonWidget(
+                                  onPressed: pausePressed,
+                                  text: engine.jogsService.stopwatch.isRunning
+                                      ? Localizable.valuefor(
+                                          key: "JOG.PAUSE.BUTTON",
+                                          context: context)
+                                      : Localizable.valuefor(
+                                          key: "JOG.RESUME.BUTTON",
+                                          context: context),
+                                  color: Colors.yellow,
+                                ),
+                                Spacer(),
+                                TimerButtonWidget(
+                                    onPressed: resetPressed,
+                                    text: Localizable.valuefor(
+                                        key: "JOG.RESET.BUTTON",
+                                        context: context),
+                                    color: Constants.colors.red),
+                                Spacer(),
+                                TimerButtonWidget(
+                                    onPressed: savePressed,
+                                    text: Localizable.valuefor(
+                                        key: "JOG.SAVE.BUTTON",
+                                        context: context),
+                                    color: Constants.colors.red),
+                                Spacer(),
+                              ]
+                            : [
+                                TimerButtonWidget(
+                                    onPressed: startPressed,
+                                    text: Localizable.valuefor(
+                                        key: "JOG.START.BUTTON",
+                                        context: context),
+                                    color: Constants.colors.green)
+                              ],
+                      )
+                    ]),
+        ));
   }
 
   @override
   void onLocationChanged(LocationData currentLocation) {
     locations.add(currentLocation);
-    engine.widgetRefreshManager.notifyRefresh(key: WidgetRefreshManager.speedKey, value: currentLocation);
+    engine.widgetRefreshManager.notifyRefresh(
+        key: WidgetRefreshManager.speedKey, value: currentLocation);
+  }
+}
+
+class TimerButtonWidget extends StatelessWidget {
+  final String text;
+  final Color color;
+  final VoidCallback onPressed;
+
+  TimerButtonWidget({this.text, this.color, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return 
+        GestureDetector(
+        onTap: onPressed,
+        child: ClipOval(
+          child: Container(
+            color: color.withOpacity(0.3),
+            height: 80.0, // height of the button
+            width: 80.0, // width of the button
+            child: Center(child: Text(text, style: TextStyle(color: color)),),
+          ),
+        ),
+      );
   }
 }
 
 class TimerTextWidget extends StatefulWidget {
   final Engine engine;
   TimerTextWidget({this.engine});
-  
+
   _TimerTextWidgetState createState() => _TimerTextWidgetState(engine: engine);
 }
 
@@ -114,8 +229,7 @@ class _TimerTextWidgetState extends State<TimerTextWidget> {
   @override
   void initState() {
     timer = new Timer.periodic(new Duration(milliseconds: 100), (Timer t) {
-      setState(() {
-      });
+      setState(() {});
     });
     super.initState();
   }
@@ -127,14 +241,16 @@ class _TimerTextWidgetState extends State<TimerTextWidget> {
   }
 
   String minutes() {
-    int hundreds = (engine.jogsService.stopwatch.elapsedMilliseconds / 10).truncate();
+    int hundreds =
+        (engine.jogsService.stopwatch.elapsedMilliseconds / 10).truncate();
     int seconds = (hundreds / 100).truncate();
     int minutes = (seconds / 60).truncate();
     return minutes.toString().padLeft(2, '0');
   }
 
   String seconds() {
-    int hundreds = (engine.jogsService.stopwatch.elapsedMilliseconds / 10).truncate();
+    int hundreds =
+        (engine.jogsService.stopwatch.elapsedMilliseconds / 10).truncate();
     int seconds = (hundreds / 100).truncate();
     int minutes = (seconds / 60).truncate();
     int secondsToDisplay = seconds - minutes * 60;
@@ -144,7 +260,8 @@ class _TimerTextWidgetState extends State<TimerTextWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-       child: Text('${minutes()}:${seconds()}', style: Constants.theme.chromo, textAlign: TextAlign.center),
+      child: Text('${minutes()}:${seconds()}',
+          style: Constants.theme.chromo, textAlign: TextAlign.center),
     );
   }
 }

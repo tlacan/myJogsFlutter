@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:location/location.dart';
 import './engine.dart';
 
@@ -7,6 +9,7 @@ abstract class LocationServiceObserver {
 
 class LocationService implements EngineComponent {
   Location location = Location();
+  StreamSubscription currentStream;
   List<LocationServiceObserver> _observers = List();
 
   addObserver(LocationServiceObserver observer) {
@@ -18,16 +21,15 @@ class LocationService implements EngineComponent {
   }
   
   void startTracking() {
-    location.onLocationChanged().listen((LocationData currentLocation) {
+    currentStream = location.onLocationChanged().listen((LocationData currentLocation) {
       for (LocationServiceObserver observer in _observers) {
         observer.onLocationChanged(currentLocation);
       }
     });
   }
     
-  void stopTracking() { 
-    location = null;
-    location = Location();
+  void stopTracking() {
+    currentStream.cancel();
   }
 
   @override

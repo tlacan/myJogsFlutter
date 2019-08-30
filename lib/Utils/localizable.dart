@@ -57,6 +57,7 @@ class Localizable {
       "JOG.START.BUTTON": "Start",
       "JOG.PAUSE.BUTTON": "Pause",
       "JOG.RESUME.BUTTON": "Resume",
+      "JOG.RESET.BUTTON": "Reset",
       "JOG.STOP.BUTTON": "Stop",
       "JOG.SPEED.LABEL": "%@ Km/h",
 

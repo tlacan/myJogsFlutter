@@ -27,7 +27,7 @@ class _SpeedTextWidgetState extends State<SpeedTextWidget>  implements WidgetRef
 	}
   
   String speedText() {
-    if (locationData == null) {
+    if (locationData == null || !engine.jogsService.stopwatch.isRunning) {
       return "";
     }
     double speed = locationData.speed * 3.6;
@@ -37,7 +37,7 @@ class _SpeedTextWidgetState extends State<SpeedTextWidget>  implements WidgetRef
   @override
   Widget build(BuildContext context) {
     return Container(
-       child: Text(speedText(), style: Constants.theme.chromo),
+       child: Text(speedText(), style: Constants.theme.chromo, textAlign: TextAlign.center),
     );
   }
 
