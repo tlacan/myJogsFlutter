@@ -26,12 +26,16 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
 
+  # App launch icon
+  flutter_launcher_icons: "^0.7.2"
+
   # Handle text risize
   auto_size_text: ^2.1.0
 
   # get user location + speed
   location: ^2.3.5
-
+  geolocator: ^5.1.3
+  
   # Data encryption
   encrypt: ^3.2.0
 
@@ -50,6 +54,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  image_path: "assets/images/logo.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -67,6 +75,7 @@ flutter:
     - assets/images/icon-logo-bis.png
     - assets/images/icon-shoe.png
     - assets/lottie/run.json
+    - assets/images/logo.png
     
   fonts:
     - family: Futura-Bold

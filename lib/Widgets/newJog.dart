@@ -77,33 +77,41 @@ class _NewJogWidgetState extends State<NewJogWidget>
         .notifyRefresh(key: WidgetRefreshManager.speedKey, value: null);
   }
 
+  void resetData() {
+    start = null;
+    locations = new List();
+    engine.locationService.stopTracking();
+    engine.jogsService.resetTimer();
+  }
+
   void resetPressed() {
     setState(() {
-      start = null;
-      locations = new List();
-      engine.locationService.stopTracking();
-      engine.jogsService.resetTimer();
+      resetData();
     });
     engine.widgetRefreshManager
         .notifyRefresh(key: WidgetRefreshManager.speedKey, value: null);
   }
 
-  void savePressed() {
+  void savePressed() async {
     setState(() {
-      isLoading = true;
+      isLoading = false;
     });
-    engine.widgetRefreshManager
-        .notifyRefresh(key: WidgetRefreshManager.speedKey, value: null);
-    engine.locationService.stopTracking();
-    engine.jogsService.pauseTimer();
-
-    locations = new List();
+    String error = await engine.jogsService.saveJog(userId: engine.userService.userModel.userId,
+                  locations: locations, begin: start, context: context);
+    resetData(); 
+    if (error != null) {
+      AlertWidget.presentDialog(messsage: error, context: context);
+    } else {
+      AlertWidget.presentDialog(messsage: Localizable.valuefor(
+                                          key: "JOG.ALERT.SUCCESS.MESSAGE",
+                                          context: context), context: context);
+    }
   }
 
-  bool speedValid() {
+   bool speedValid() {
     if (locations.isNotEmpty) {
       LocationData lastLocation = locations.last;
-      double speed = lastLocation.speed;
+      double speed = (lastLocation.speed ?? 0) * 3.6;
       double speedTarget = engine.settingsService.settingsModel.speedTarget;
       if (speed > speedTarget) {
         return (speed -
@@ -119,12 +127,33 @@ class _NewJogWidgetState extends State<NewJogWidget>
     return false;
   }
 
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
         backgroundColor: Colors.black,
         child: SafeArea(
+          child:
+          Container(
+            decoration: 
+            !engine.jogsService.stopwatch.isRunning ? BoxDecoration() :
+            BoxDecoration(
+            // Box decoration takes a gradient
+            gradient: LinearGradient(
+              // Where the linear gradient begins and ends
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [0.2, 0.4, 0.6],
+              colors:
+              [
+                // Colors are easy thanks to Flutter's Colors class.
+                Colors.black,
+                speedValid() ? Constants.colors.green : Constants.colors.red,
+                Colors.black,
+              ]
+            ),),
           child: Column(
+            
               mainAxisAlignment: MainAxisAlignment.center,
               children: isLoading
                   ? [
@@ -135,12 +164,19 @@ class _NewJogWidgetState extends State<NewJogWidget>
                   : <Widget>[
                       TimerTextWidget(engine: engine),
                       SpeedTextWidget(engine: engine),
-                      Spacer(),
+                      Container(height: 30, width: 200),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: start != null
                             ? <Widget>[
                               Spacer(),
+                                TimerButtonWidget(
+                                    onPressed: resetPressed,
+                                    text: Localizable.valuefor(
+                                        key: "JOG.RESET.BUTTON",
+                                        context: context),
+                                    color: Constants.colors.red),
+                                Spacer(),
                                 TimerButtonWidget(
                                   onPressed: pausePressed,
                                   text: engine.jogsService.stopwatch.isRunning
@@ -154,18 +190,11 @@ class _NewJogWidgetState extends State<NewJogWidget>
                                 ),
                                 Spacer(),
                                 TimerButtonWidget(
-                                    onPressed: resetPressed,
-                                    text: Localizable.valuefor(
-                                        key: "JOG.RESET.BUTTON",
-                                        context: context),
-                                    color: Constants.colors.red),
-                                Spacer(),
-                                TimerButtonWidget(
                                     onPressed: savePressed,
                                     text: Localizable.valuefor(
                                         key: "JOG.SAVE.BUTTON",
                                         context: context),
-                                    color: Constants.colors.red),
+                                    color: Constants.colors.green),
                                 Spacer(),
                               ]
                             : [
@@ -178,12 +207,14 @@ class _NewJogWidgetState extends State<NewJogWidget>
                               ],
                       )
                     ]),
-        ));
+    )));
   }
 
   @override
   void onLocationChanged(LocationData currentLocation) {
-    locations.add(currentLocation);
+    setState(() {
+      locations.add(currentLocation);
+    });
     engine.widgetRefreshManager.notifyRefresh(
         key: WidgetRefreshManager.speedKey, value: currentLocation);
   }

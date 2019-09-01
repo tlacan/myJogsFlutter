@@ -11,7 +11,7 @@ class PositionModel {
   
   static List<PositionModel> fromJsonArray(List<dynamic> jsonList) {
     List<PositionModel> result = List();
-    for (Map<String, dynamic> jsonElement in jsonList) {
+    for (Map<String, dynamic> jsonElement in jsonList ?? List()) {
       result.add(PositionModel.fromJson(jsonElement));
     }
     return result;
