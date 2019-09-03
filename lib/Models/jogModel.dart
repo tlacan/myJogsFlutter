@@ -1,6 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 
 import 'package:my_jogs/Models/positionModel.dart';
+import 'package:my_jogs/Utils/helper.dart';
 
 class JogModel {
   static final storageKey = "jogModel";
@@ -55,11 +56,11 @@ class JogModel {
 
   Map<String, dynamic> toJson() {   
       return {
-      'id': id.toString(),
-      'userId': userId.toString(),
+      'id': id,
+      'userId': userId,
       'position': position == null ? null : position.map((value) => value.toJson()).toList(),
-      'beginDate': beginDate == null ? null : beginDate.toIso8601String(),
-      'endDate': endDate == null ? null : endDate.toIso8601String()
+      'beginDate': Helper.dateISO8601Short(beginDate),
+      'endDate': Helper.dateISO8601Short(endDate)
     };
   } 
 }

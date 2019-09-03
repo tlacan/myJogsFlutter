@@ -82,23 +82,26 @@ class _NewJogWidgetState extends State<NewJogWidget>
     locations = new List();
     engine.locationService.stopTracking();
     engine.jogsService.resetTimer();
+    engine.widgetRefreshManager
+      .notifyRefresh(key: WidgetRefreshManager.speedKey, value: null);
   }
 
   void resetPressed() {
     setState(() {
       resetData();
     });
-    engine.widgetRefreshManager
-        .notifyRefresh(key: WidgetRefreshManager.speedKey, value: null);
   }
 
   void savePressed() async {
     setState(() {
-      isLoading = false;
+      isLoading = true;
     });
     String error = await engine.jogsService.saveJog(userId: engine.userService.userModel.userId,
                   locations: locations, begin: start, context: context);
-    resetData(); 
+    setState(() {
+      isLoading = false;
+      resetData(); 
+    });
     if (error != null) {
       AlertWidget.presentDialog(messsage: error, context: context);
     } else {

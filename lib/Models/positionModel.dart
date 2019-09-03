@@ -6,8 +6,8 @@ class PositionModel {
   PositionModel({this.lat, this.lon});
   
   PositionModel.fromJson(Map<String, dynamic> json)
-    : lat = json['lat'],
-      lon = json['lon'];
+    : lat = json['lat'] is String ? double.parse(json['lat']) : json['lat'],
+      lon = json['lon'] is String ? double.parse(json['lon']) : json['lon'];
   
   static List<PositionModel> fromJsonArray(List<dynamic> jsonList) {
     List<PositionModel> result = List();

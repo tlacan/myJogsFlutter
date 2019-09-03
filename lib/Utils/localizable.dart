@@ -60,6 +60,7 @@ class Localizable {
       "JOG.RESET.BUTTON": "Reset",
       "JOG.STOP.BUTTON": "Stop",
       "JOG.SPEED.LABEL": "%@ Km/h",
+      "JOG.ALERT.FAIL.MESSAGE": "Jog saving error, jog will be saved on next launch!",
       "JOG.ALERT.SUCCESS.MESSAGE": "Your jog has been successfuly saved!",
 
 /*

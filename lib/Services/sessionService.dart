@@ -25,7 +25,7 @@ class SessionService implements EngineComponent {
     if (sessionModel == null) {
       return Map();
     }
-    return {SessionService.kAutorizationHeader : sessionModel.token};
+    return {SessionService.kAutorizationHeader : "Bearer ${sessionModel.token}"};
   }
 
   @override

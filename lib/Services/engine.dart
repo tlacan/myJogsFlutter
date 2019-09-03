@@ -41,13 +41,13 @@ class Engine {
     sessionService = SessionService(storageManager: storageManager);
     userService = UserService(storageManager: storageManager, sessionService: sessionService);
     settingsService = SettingsService(storageManager: storageManager);
-    jogsService = JogsService(storageManager: storageManager);
+    jogsService = JogsService(storageManager: storageManager, sessionService: sessionService);
     locationService = LocationService();
-    components.add(jogsService);
+    components.add(sessionService);
     components.add(settingsService);
     components.add(userService);
-    components.add(sessionService);
     components.add(locationService);
+    components.add(jogsService);
   }
 
   loadDataInStoreManager() {

@@ -6,4 +6,10 @@ class Helper {
     }
     return value.isEmpty;
   }
+
+  static String dateISO8601Short(DateTime date) {
+    final length = 19;
+    var result = date.toIso8601String();
+    return "${result.substring(0, length)}Z";
+  }
 }
