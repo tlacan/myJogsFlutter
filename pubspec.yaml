@@ -32,6 +32,8 @@ dependencies:
   # Handle text risize
   auto_size_text: ^2.1.0
 
+  statusbar: ^1.0.8
+  
   # get user location + speed
   location: ^2.3.5
   geolocator: ^5.1.3
