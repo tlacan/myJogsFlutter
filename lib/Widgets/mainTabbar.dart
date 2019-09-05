@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 import 'package:my_jogs/Utils/localizable.dart';
+import 'package:my_jogs/Widgets/jogsList.dart';
 import 'package:my_jogs/Widgets/newJog.dart';
 import 'package:my_jogs/Widgets/settings.dart';
 import '../manager/widgetRefreshManager.dart';
@@ -63,7 +64,7 @@ class _MainWidgetState extends State<MainWidget> implements UserServiceObserver,
       tabBuilder: (context, index) {
         switch (index) {
           case 0:
-            return engine.userService.connected() ? Center(child: Text("Tab 1")) : Center(child: LoginWidget(engine),);
+            return engine.userService.connected() ? JogsListWidget(engine: engine) : Center(child: LoginWidget(engine),);
             break;
           case 1:
             return engine.userService.connected() ? NewJogWidget(engine: engine) : Center(child: SignUpWidget(engine),);

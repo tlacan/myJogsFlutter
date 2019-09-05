@@ -49,6 +49,14 @@ class Localizable {
 
 /*
  *********************************
+ ** History
+ */
+      "HISTORY.TITLE": "History",
+      "HISTORY.EMPYT.LABEL": "You have recorded no jogs so far :(",
+      "HISTORY.REFRSH.BUTTON": "Refresh",
+
+/*
+ *********************************
  ** Jog view
  */
       "JOG.ERROR.AUTHORIZATION": "Location Authorization has been denied, can not record a new jog",

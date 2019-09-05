@@ -10,6 +10,7 @@ class JogModel {
   List<PositionModel> position;
   DateTime beginDate;
   DateTime endDate;
+  double distance;
 
   JogModel({this.id, this.userId, this.position, this.beginDate, this.endDate});
 
@@ -30,14 +31,14 @@ class JogModel {
     return result;
   }
 
-  static Future<double> totalDistanceFrom(List<PositionModel> positions) async {
+  Future<double> computedTotalDistance() async {
         double result = 0;
         var index = 0;
-        for (var position in positions ?? List()) {
+        for (var pos in position ?? List()) {
           index++;
-          if (index < positions.length) {
-            final secondPosition = positions[index];
-            double distance = await Geolocator().distanceBetween(position.lat, position.lon, secondPosition.lat, secondPosition.lon);
+          if (index < position.length) {
+            final secondPos = position[index];
+            double distance = await Geolocator().distanceBetween(pos.lat, pos.lon, secondPos.lat, secondPos.lon);
             if (distance != null) {
               result += distance;
             }

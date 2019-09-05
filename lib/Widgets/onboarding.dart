@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -129,11 +130,15 @@ class _ClassOnboardingPageElement extends StatelessWidget {
               width: 200,
               height: 200,
             ),
-            Text(
+            Container(
+              margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: AutoSizeText(
               description ?? "",
               textAlign: TextAlign.center,
               style: Constants.theme.onboardingText,
-            )
+              maxLines:3
+            ),)
+            
           ],
         ),
       ),

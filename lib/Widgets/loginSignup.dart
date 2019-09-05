@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import '../Utils/localizable.dart';
 import '../Utils/constants.dart';
@@ -15,15 +16,22 @@ class HeaderLoginSignupWidget extends StatelessWidget {
     return Row(
             children: <Widget>[
               Spacer(),
+              Flexible(
+                fit: FlexFit.tight,
+                child:
               Container(
                   margin: EdgeInsets.fromLTRB(0, 0, 8, 0),
-                  child: Text(
+                  child: AutoSizeText(
                     Localizable.valuefor(key: "Main.App.Title", context: context),
                     style: Constants.theme.appTitle,
-                  )),
-              RoundButton(
-                  text: buttonText,
-                  onPressed: onPressed),
+                    maxLines: 1,
+                  ))),
+              Expanded(child: 
+                RoundButton(
+                    text: buttonText,
+                    onPressed: onPressed),
+              )
+              
             ],
           );
   }

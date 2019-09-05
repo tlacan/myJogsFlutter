@@ -79,6 +79,42 @@ class JogsService implements EngineComponent {
     return postJog(jog: jog, context: context);
   }
 
+  Future<bool> loadDistance() async {
+    for (var jog in jogs) {
+      if (jog.distance == null) {
+        jog.distance = await jog.computedTotalDistance();
+      }
+    }
+    return true;
+  }
+
+  Future<void> refreshJogs({BuildContext context}) async {
+    setState(newState: ServiceState.loading);
+    var headers = sessionService.sessionHeader();
+    final response = await http.get(Constants.url.jogs, headers: headers);
+    if (response.statusCode == 200) {
+      var jsonResponse = convert.jsonDecode(response.body);
+      jogs = JogModel.fromJsonArray(jsonResponse);
+      await loadDistance();
+      setState(newState: ServiceState.loaded);
+      return null;
+    }
+    await loadDistance();
+    setState(newState: ServiceState.error, error: Localizable.valuefor(key:"APIERROR.COMMON", context: context));
+    return null;
+  }
+
+  Future<String> deleteJog({JogModel jog, BuildContext context}) async {
+    var headers = sessionService.sessionHeader();
+    headers["content-type"] = "application/json";
+    final response = await http.delete("${Constants.url.jogs}/${jog.id}", headers: headers);
+
+    if (response.statusCode == 200) {
+      return null;
+    }
+    return context == null ? null : Localizable.valuefor(key:"JOG.ALERT.FAIL.MESSAGE", context: context);
+  }
+
   Future<String> postJog({JogModel jog, BuildContext context}) async {
     final body = jog.toJson();
     var headers = sessionService.sessionHeader();
@@ -88,6 +124,8 @@ class JogsService implements EngineComponent {
     if (response.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(response.body);
       jogs[jogs.indexOf(jog)].id = jsonResponse["id"];
+      jogs = jogs;
+      await loadDistance();
       return null;
     }
     return context == null ? null : Localizable.valuefor(key:"JOG.ALERT.FAIL.MESSAGE", context: context);
