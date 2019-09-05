@@ -2,7 +2,7 @@
 # My Jogs
 </center>
 
-<center>![](logo.png)<br />
+<center>![logo](logo.png)<br />
 Record your jogs into a flutter application</center>
 
 
