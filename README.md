@@ -1,6 +1,9 @@
+<center>
 # My Jogs
+</center>
 
-Record your jogs into a flutter application
+<center>![](logo.png)<br />
+Record your jogs into a flutter application</center>
 
 
 ## Description
@@ -31,25 +34,34 @@ There are some additional helpers class to handle strings, styles, date formatin
 List of features available into the application.
 
 
-Onboarding, this one is displayed on every launched until this one has been closed by tapping
+###Onboarding<br />
+<center>![](1.gif)<br /></center>
+Onboarding is displayed on every launched until this one has been closed by tapping
 "let's go".
 
+<br />
+###Login<br />
+<center>![](2.gif)<br /></center>
+login button is disabled when the fields are empty.
 
-Application Login, login button is disabled when the fields are empty.
+###Signup<br />
+<center>![](3.gif)<br /></center>
+There are some fields control such as valid email address, password length, matching password confirmation. <br /><br />
 
-
-Application signup to create a new account. <br />
-There are some fields control such as valid email address, password length, matching password confirmation.
-
-
-Record a new jog, it asks for the geo location. <br />
-This way it has the user speed. 
-A chrono is displayed.
+###Record a new jog<br />
+<center>![](4.gif)<br /></center>
+It asks for the geo location.<br />
+This way it has the user speed. <br />
+A chrono is displayed.<br />
 The background is green or red depending if it fits your settings.
 
-Settings, configure the desired target speed, and the tolerance level and logout button.
+###Settings<br />
+<center>![](5.gif)<br /></center>
+Configure the desired target speed, and the tolerance level for your jogs.
+Logout button.
 
-
+###History<br />
+<center>![](6.gif)<br /></center>
 History show the jogs recorded, you can delete a Jog with left swipte action.
 
 
