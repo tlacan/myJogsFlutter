@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'dart:io' show Platform;
 
 class Constants {
   static final colors = _ColorValues();
@@ -8,7 +9,7 @@ class Constants {
 }
 
 class _Urls {
-  static final _baseUrl = "http://localhost:8080";
+  static final _baseUrl = Platform.isAndroid ? "http://10.0.2.2:8080" : "http://localhost:8080";
 
   final login = "$_baseUrl/login";
   final signUp = "$_baseUrl/register";

@@ -107,15 +107,18 @@ class _SettingsWidgetState extends State<SettingsWidget> {
                                 color: Constants.colors.border, width: 1),
                           )),
                       height: 45,
-                      child: Container(
-                          alignment: Alignment.center,
-                          child: FlatButton(
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [Expanded(child: FlatButton(
                               onPressed: logoutPressed,
                               textColor: Constants.colors.red,
-                              child: Text(Localizable.valuefor(
+                              child: Text(
+                              Localizable.valuefor(
                                   key: "SETTINGS.LOGOUT.BUTTON",
-                                  context: context))),
-                          margin: EdgeInsets.fromLTRB(16, 0, 16, 0))));
+                                  context: context,
+                                  ), textAlign: TextAlign.center,)))],
+                          )));
   }
 
   @override

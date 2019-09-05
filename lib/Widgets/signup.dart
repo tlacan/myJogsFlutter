@@ -27,8 +27,9 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.yellow,
-        body: SafeArea(
+        body: SingleChildScrollView(child: SafeArea(
             child: Column(children: [
           Container(
             margin: EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -56,7 +57,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               child: SingUpForm(
                 engine: engine,
               ))
-        ])));
+        ]))));
   }
 
   void onViewCreated(LottieController controller) {

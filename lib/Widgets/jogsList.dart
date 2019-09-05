@@ -12,7 +12,6 @@ import 'package:my_jogs/Utils/helper.dart';
 import 'package:my_jogs/Utils/localizable.dart';
 import 'package:my_jogs/Widgets/alert.dart';
 import 'package:my_jogs/Widgets/roundButton.dart';
-import 'package:statusbar/statusbar.dart';
 
 class JogsListWidget extends StatefulWidget {
   final Engine engine;
@@ -156,7 +155,7 @@ class _JogsListWidgetState extends State<JogsListWidget> implements JogsServiceO
 
   @override
   Widget build(BuildContext context) {
-    StatusBar.color(CupertinoTheme.of(context).barBackgroundColor);
+    //StatusBar.color(CupertinoTheme.of(context).barBackgroundColor);
     return Container(
        child: CupertinoPageScaffold(
         backgroundColor: CupertinoColors.lightBackgroundGray,

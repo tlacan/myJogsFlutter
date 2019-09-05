@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
-import 'package:statusbar/statusbar.dart';
 
 import 'package:my_jogs/Manager/widgetRefreshManager.dart';
 import 'package:my_jogs/Services/engine.dart';
@@ -134,12 +133,13 @@ class _NewJogWidgetState extends State<NewJogWidget>
 
   @override
   Widget build(BuildContext context) {
-    StatusBar.color(Colors.white);
+    //StatusBar.color(Colors.white);
     return CupertinoPageScaffold(
-        backgroundColor: Colors.black,
         child: SafeArea(
           child:
           Container(
+            color: Colors.black,
+            child: Container(
             decoration: 
             !engine.jogsService.stopwatch.isRunning ? BoxDecoration() :
             BoxDecoration(
@@ -158,7 +158,6 @@ class _NewJogWidgetState extends State<NewJogWidget>
               ]
             ),),
           child: Column(
-            
               mainAxisAlignment: MainAxisAlignment.center,
               children: isLoading
                   ? [
@@ -212,7 +211,9 @@ class _NewJogWidgetState extends State<NewJogWidget>
                               ],
                       )
                     ]),
-    )));
+    ),
+          )
+          ));
   }
 
   @override

@@ -14,8 +14,6 @@ PODS:
   - lottie-ios (2.5.3)
   - path_provider (0.0.1):
     - Flutter
-  - statusbar (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
@@ -25,7 +23,6 @@ DEPENDENCIES:
   - location (from `.symlinks/plugins/location/ios`)
   - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
-  - statusbar (from `.symlinks/plugins/statusbar/ios`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -46,8 +43,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/location_permissions/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
-  statusbar:
-    :path: ".symlinks/plugins/statusbar/ios"
 
 SPEC CHECKSUMS:
   Flutter: 58dd7d1b27887414a370fcccb9e645c08ffd7a6a
@@ -58,7 +53,6 @@ SPEC CHECKSUMS:
   location_permissions: 67cfaff583afbb027a9f9248196f4b79c40f3cdc
   lottie-ios: a50d5c0160425cd4b01b852bb9578963e6d92d31
   path_provider: f96fff6166a8867510d2c25fdcc346327cc4b259
-  statusbar: 7d4f3b27d5e9317b17bc48cbf6046f892bf9ebeb
 
 PODFILE CHECKSUM: b6a0a141693093b304368d08511b46cf3d1d0ac5
 

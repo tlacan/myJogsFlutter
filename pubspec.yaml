@@ -33,7 +33,7 @@ dependencies:
   auto_size_text: ^2.1.0
 
   # Handle status bar color
-  statusbar: ^1.0.8
+  # statusbar: ^1.0.8
 
   # Date formatter
   intl: ^0.15.8
