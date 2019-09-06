@@ -1,9 +1,12 @@
+
 <center>
-# My Jogs
+# My Jogs 
 </center>
-<center>!<img src="https://github.com/tlacan/myJogsFlutter/blob/master/logo.png" alt="logo"><br />
-Record your jogs into a flutter application</center>
-<img src="https://github.com/tlacan/myJogsFlutter/blob/master/logo.png" alt="logo">
+<p align="center">
+<img src="https://github.com/tlacan/myJogsFlutter/blob/master/logo.png" alt="logo"><br />
+Record your jogs into a flutter application
+</p>
+
 
 
 ## Description
@@ -35,33 +38,33 @@ List of features available into the application.
 
 
 ###Onboarding<br />
-<center>![1](https://github.com/tlacan/myJogsFlutter/blob/master/1.gif)<br /></center>
+<p align="center"><img src="https://github.com/tlacan/myJogsFlutter/blob/master/1.gif" alt="1"><br /></p>
 Onboarding is displayed on every launched until this one has been closed by tapping
 "let's go".
 
 <br />
 ###Login<br />
-<center>![2](https://github.com/tlacan/myJogsFlutter/blob/master/2.gif)<br /></center>
+<p align="center"><img src="https://github.com/tlacan/myJogsFlutter/blob/master/2.gif" alt="2"><br /></p>
 login button is disabled when the fields are empty.
 
 ###Signup<br />
-<center>![3](https://github.com/tlacan/myJogsFlutter/blob/master/3.gif)<br /></center>
+<p align="center"><img src="https://github.com/tlacan/myJogsFlutter/blob/master/3.gif" alt="3"><br /></p>
 There are some fields control such as valid email address, password length, matching password confirmation. <br /><br />
 
 ###Record a new jog<br />
-<center>![4](https://github.com/tlacan/myJogsFlutter/blob/master/4.gif)<br /></center>
+<p align="center"><img src="https://github.com/tlacan/myJogsFlutter/blob/master/4.gif" alt="4"><br /></p>
 It asks for the geo location.<br />
 This way it has the user speed. <br />
 A chrono is displayed.<br />
 The background is green or red depending if it fits your settings.
 
 ###Settings<br />
-<center>![5](https://github.com/tlacan/myJogsFlutter/blob/master/5.gif)<br /></center>
+<p align="center"><img src="https://github.com/tlacan/myJogsFlutter/blob/master/5.gif" alt="5"><br /></p>
 Configure the desired target speed, and the tolerance level for your jogs.
 Logout button.
 
 ###History<br />
-<center>![6](https://github.com/tlacan/myJogsFlutter/blob/master/6.gif)<br /></center>
+<p align="center"><img src="https://github.com/tlacan/myJogsFlutter/blob/master/6.gif" alt="6"><br /></p>
 History show the jogs recorded, you can delete a Jog with left swipte action.
 
 
