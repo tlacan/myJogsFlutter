@@ -1,7 +1,5 @@
-
-<center>
 # My Jogs 
-</center>
+
 <p align="center">
 <img src="https://github.com/tlacan/myJogsFlutter/blob/master/logo.png" alt="logo"><br />
 Record your jogs into a flutter application
