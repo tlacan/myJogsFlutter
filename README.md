@@ -1,10 +1,9 @@
 <center>
 # My Jogs
 </center>
-[![Vapor](https://user-images.githubusercontent.com/1742140/43014701-5ad8f7de-8c4d-11e8-86d2-4db3d71581aa.png)]
-<center>![logo](https://github.com/tlacan/myJogsFlutter/blob/master/logo.png)<br />
+<center>!<img src="https://github.com/tlacan/myJogsFlutter/blob/master/logo.png" alt="logo"><br />
 Record your jogs into a flutter application</center>
-<img src="http://img.shields.io/badge/read_the-docs-2196f3.svg" alt="Documentation">
+<img src="https://github.com/tlacan/myJogsFlutter/blob/master/logo.png" alt="logo">
 
 
 ## Description
